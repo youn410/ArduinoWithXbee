@@ -20,7 +20,7 @@ void loop() {
       Serial.println(rx16.getRssi());
     }
   }else{
-    Serial.println("cant read packet!");
+    Serial.println("Cant read packet!");
   }
   delay(1000);
 }
