@@ -16,22 +16,36 @@ void setup() {
 
 void loop() {
   xbee.send(remoteAtRequest);
-  delay(1000);
-  Serial.print("Send packet!! --> ");
+  Serial.println("Send packet!! --> ");
   
   xbee.readPacket(500);
+  RemoteAtCommandResponse response = RemoteAtCommandResponse();
   if(xbee.getResponse().isAvailable()){
     if(xbee.getResponse().getApiId() == REMOTE_AT_COMMAND_RESPONSE){
-      //Serial.print("REMOTE_AT_COMMAND_RESPONSE : ");
-      //Serial.println(xbee.getResponse().getApiId());
-      Serial.print("Value : ");
+      
+      Serial.print("API ID : ");
+      Serial.println(xbee.getResponse().getApiId());
+      
       uint8_t frameDataLength = xbee.getResponse().getFrameDataLength();
       uint8_t* frameData = xbee.getResponse().getFrameData();
+      Serial.print("Length : ");
+      Serial.println(frameDataLength);
+      
+      Serial.print("Value : ");
       for(int i=0;i<frameDataLength;i++){
-        Serial.print(frameData[i]);
+        Serial.print(frameData[i], HEX);
         Serial.print(" ");
       }
       Serial.println("");
+
+      XBeeAddress64 fromAddr = response.getRemoteAddress64();
+      for(int i=0;i<response.getValueLength();i++){
+         Serial.print(response.getValue()[i], HEX);
+         Serial.print(" ");
+      }
+      Serial.println("");
+      //Serial.println(response.getRemoteAddress16(), HEX);
+      
     }else{
       Serial.print("not REMOTE_AT_COMMAND_RESPONSE : ");
       Serial.println(xbee.getResponse().getApiId());
@@ -39,5 +53,5 @@ void loop() {
   }else{
     Serial.println("Miss!!");
   }
-  delay(4000);
+  delay(4500);
 }
