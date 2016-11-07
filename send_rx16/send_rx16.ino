@@ -25,6 +25,9 @@ void loop() {
       
       Serial.print("API ID : ");
       Serial.println(xbee.getResponse().getApiId());
+
+      Serial.print("Status : ");
+      Serial.println(response.getStatus());
       
       uint8_t frameDataLength = xbee.getResponse().getFrameDataLength();
       uint8_t* frameData = xbee.getResponse().getFrameData();
