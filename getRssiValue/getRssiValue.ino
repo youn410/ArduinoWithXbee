@@ -3,13 +3,14 @@
 
 XBee xbee = XBee();
 uint8_t payload[] = { 0 , 0 };
-//XBeeAddress64 addr64 = XBeeAddress64(0x0013A200, 0x40B3C215);
+//XBeeAddress64 addr64 = XBeeAddress64(0x0013a200, 0x40b3c215);
 XBeeAddress64 addr64 = XBeeAddress64(0x00000000, 0x0000ffff);
 uint8_t cmd[] = {'D', 'B'};
 RemoteAtCommandRequest remoteAtRequest = RemoteAtCommandRequest(addr64, cmd);
 RemoteAtCommandResponse remoteResp = RemoteAtCommandResponse();
 
 int count;
+int rssi = 0;
 
 void setup() {
   count = 0;
@@ -21,8 +22,8 @@ void setup() {
 
 void loop() {
   xbee.send(remoteAtRequest);
-  delay(1000);
-  xbee.readPacket(1000);
+  //delay(100);
+  xbee.readPacket(100);
 
   if(xbee.getResponse().isAvailable()){ // 受信成功
     // Serial.println("Succeeded");
@@ -43,6 +44,7 @@ void loop() {
           Serial.print(count);
           Serial.print(",");
           Serial.println(remoteResp.getValue()[0]);
+          //rssi = remoteResp.getValue()[0];
         }else{
           Serial.print("Finish!");
         }
@@ -59,5 +61,5 @@ void loop() {
     Serial.println("Miss");
   }
 
-  delay(1000);
+  delay(500);
 }
