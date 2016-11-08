@@ -9,10 +9,14 @@ uint8_t cmd[] = {'D', 'B'};
 RemoteAtCommandRequest remoteAtRequest = RemoteAtCommandRequest(addr64, cmd);
 RemoteAtCommandResponse remoteResp = RemoteAtCommandResponse();
 
+int count;
+
 void setup() {
+  count = 0;
+  
   Serial.begin(9600);
   xbee.begin(Serial);
-  delay(5000);
+  delay(10000);
 }
 
 void loop() {
@@ -21,20 +25,30 @@ void loop() {
   xbee.readPacket(1000);
 
   if(xbee.getResponse().isAvailable()){ // 受信成功
-    Serial.println("Succeeded");
+    // Serial.println("Succeeded");
 
     if(xbee.getResponse().getApiId() == AT_COMMAND_RESPONSE){
-      Serial.println(" AT_COMMAND_RESPONSE"); 
+      // Serial.println(" AT_COMMAND_RESPONSE"); 
     }else if(xbee.getResponse().getApiId() == REMOTE_AT_COMMAND_RESPONSE){
-      Serial.println(" REMOTE_AT_COMMAND_RESPONSE");
+      //Serial.println(" REMOTE_AT_COMMAND_RESPONSE");
       xbee.getResponse().getRemoteAtCommandResponse(remoteResp);
 
       if(remoteResp.getStatus() == AT_OK){
-        Serial.println(" AT_OK");
-        Serial.print(" Length : ");
-        Serial.println(remoteResp.getValueLength());
-        Serial.print(" Value : ");
-        Serial.println(remoteResp.getValue()[0]);
+        //Serial.println(" AT_OK");
+        //Serial.print(" Length : ");
+        //Serial.println(remoteResp.getValueLength());
+        //Serial.print(" Value : ");
+        if(count < 100){
+          Serial.print(",");
+          Serial.print(count);
+          Serial.print(",");
+          Serial.println(remoteResp.getValue()[0]);
+        }else{
+          Serial.print("Finish!");
+        }
+
+        count++;
+        
       }
       
     }else{
