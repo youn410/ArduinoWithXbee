@@ -22,7 +22,7 @@ void setup() {
 }
 
 void loop() {
-  if(count < 100){
+  if(count < 50){
     xbee.send(remoteAtRequest);
     xbee.readPacket(150);
     
@@ -42,8 +42,8 @@ void loop() {
     count++;
     
     delay(350);
-  }else if(count == 100){
-      for(int i=0;i<100;i++){
+  }else if(count == 50){
+      for(int i=0;i<50;i++){
         Serial.print(api_id[i], HEX);
         Serial.print(", ");
         Serial.println(value[i]);
