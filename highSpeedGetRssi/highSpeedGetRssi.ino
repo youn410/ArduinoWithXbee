@@ -39,7 +39,7 @@ void loop() {
     Serial.print(' ');
     Serial.println(remoteResp.getValue()[0]);
 
-    remoteResp.getFrameData();
+    //remoteResp.getFrameData();
     
     delay(1500);
 
