@@ -10,6 +10,11 @@ uint8_t cmdVal[] = {0};
 RemoteAtCommandRequest remoteAtRequest = RemoteAtCommandRequest(addr64, cmd);
 RemoteAtCommandResponse remoteResp = RemoteAtCommandResponse();
 
+unsigned long time_ms;
+unsigned long pre_time;
+
+int counter = 0;
+
 /*
 void getRemoteAtReqFrame(){
   Serial.print("RemoteAtCommand : ");
@@ -26,11 +31,16 @@ void setup() {
 }
 
 void loop() {
+  
+    while(millis() - pre_time < 1500){
+      ;
+    }
+  
 
-    //getRemoteAtReqFrame();
-
+    Serial.print(counter);
+    
     xbee.send(remoteAtRequest);
-    xbee.readPacket(1500);
+    xbee.readPacket(500);
     
     xbee.getResponse().getRemoteAtCommandResponse(remoteResp);
   
@@ -38,9 +48,10 @@ void loop() {
     Serial.print(xbee.getResponse().isAvailable());
     Serial.print(' ');
     Serial.println(remoteResp.getValue()[0]);
-
-    //remoteResp.getFrameData();
     
-    delay(1500);
+    //delay(2500);
+
+    pre_time = millis();
+    counter++;
 
 }
